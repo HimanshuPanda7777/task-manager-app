@@ -1,117 +1,149 @@
-# **Task Manager App — MERN Stack**
+🎯 Task Manager App (MERN Stack)
 
-A lightweight, modular, and production-ready **Task Manager** built using the **MERN stack** with JWT authentication and a modern, responsive interface.
+A lightweight, production-ready, and fully responsive Task Manager application built on the MERN stack. It provides secure, user-specific task management using modern authentication patterns.
 
----
+📦 Tech Stack
 
-## 📦 **Tech Stack**
+This application utilizes a modern, modular architecture, leveraging the following technologies:
 
-### **Backend**
-- Node.js  
-- Express.js  
-- MongoDB + Mongoose  
-- JWT Authentication  
-- bcrypt (password hashing)
+Backend (Node.js/Express)
 
-### **Frontend**
-- React (Vite)  
-- Axios  
-- TailwindCSS  
-- React Router
+Technology
 
----
+Description
 
-# 🔧 **1. Local Setup Instructions**
+Node.js
 
-## **Clone the repository**
-```bash
-git clone https://github.com/YOUR_USERNAME/task-manager-app.git
+JavaScript runtime environment.
+
+Express.js
+
+Minimalist web framework for building APIs.
+
+MongoDB + Mongoose
+
+NoSQL database and its object data modeling (ODM) library.
+
+JWT Authentication
+
+Secure token-based authentication for protected routes.
+
+bcrypt
+
+Library used for securely hashing user passwords.
+
+Frontend (React/Vite)
+
+Technology
+
+Description
+
+React (Vite)
+
+Frontend library for building user interfaces, bundled with Vite.
+
+Tailwind CSS
+
+Utility-first CSS framework for rapid and responsive styling.
+
+Axios
+
+Promise-based HTTP client for API requests.
+
+React Router
+
+Declarative routing library for navigation.
+
+1. Local Setup Instructions
+
+Prerequisites
+
+Ensure you have Node.js (LTS recommended) and a MongoDB instance (local or cloud) available.
+
+Step 1: Clone the Repository
+
+git clone [https://github.com/YOUR_USERNAME/task-manager-app.git](https://github.com/YOUR_USERNAME/task-manager-app.git)
 cd task-manager-app
-Backend Setup
+
+
+Step 2: Backend Configuration
+
+Navigate to the backend directory:
+
 cd backend
+
+
+Install dependencies:
+
 npm install
 
 
-Create a .env file in the backend directory:
+Create a file named .env in the backend/ directory and populate it with your configuration details:
 
-MONGO_URI=<your-mongodb-uri>
-JWT_SECRET=<your-secret>
+MONGO_URI=<your-mongodb-connection-string>
+JWT_SECRET=<a-strong-secret-key-for-jwt-signing>
 PORT=5000
 
 
-Start the backend:
+Step 3: Frontend Configuration
 
-npm run dev
+Navigate to the frontend directory:
 
-
-Backend runs at:
-
-http://localhost:5000
-
-Frontend Setup
 cd ../frontend
+
+
+Install dependencies:
+
 npm install
-npm run dev
 
 
-Frontend runs at:
+2. Running the Application
 
-http://localhost:5173
+To run the application, start both the backend API server and the frontend development server concurrently.
 
-▶️ 2. How to Run the Application
-
-Start backend:
+Start Backend (API Server)
 
 cd backend
 npm run dev
 
 
-Start frontend:
+The backend will run on http://localhost:5000.
+
+Start Frontend (Dev Server)
 
 cd frontend
 npm run dev
 
 
-Open the application:
+The frontend will run on http://localhost:5173.
 
-http://localhost:5173
+Open your browser to: http://localhost:5173
 
-🧪 3. How to Run Tests & View Coverage
+3. API Endpoint Documentation
 
-(Use these commands if tests are added to the project.)
+All endpoints are prefixed with /api. Protected routes require a valid JWT passed in the Authorization header as Bearer <token>.
 
-Run tests:
+Authentication Endpoints
 
-npm test
+Method
 
+Path
 
-Generate coverage report:
+Description
 
-npm run test:coverage
+POST
 
+/api/register
 
-Open coverage report:
+Registers a new user.
 
-/coverage/index.html
+POST
 
-📡 4. API Endpoint Documentation
-🔐 Authentication
-POST /api/register
+/api/login
 
-Register a new user.
+Authenticates a user and returns a JWT.
 
-Body
-
-{
-  "username": "user123",
-  "password": "password"
-}
-
-POST /api/login
-
-Log in and receive JWT.
-
-Body
+Example: Login Request
 
 {
   "username": "user123",
@@ -119,59 +151,93 @@ Body
 }
 
 
-Response
+Example: Login Response
 
 {
-  "token": "JWT_TOKEN"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 
 
-Use this token for all protected routes:
+Task Endpoints (Protected)
 
-Authorization: Bearer <token>
+Method
 
-🗂 Tasks API
-GET /api/tasks
+Path
 
-Retrieve all tasks of the authenticated user.
+Description
 
-POST /api/tasks
+GET
 
-Create a new task.
+/api/tasks
 
-Body
+Retrieves all tasks for the authenticated user.
+
+POST
+
+/api/tasks
+
+Creates a new task.
+
+PUT
+
+/api/tasks/:id
+
+Updates an existing task (title, status, description).
+
+DELETE
+
+/api/tasks/:id
+
+Deletes a specified task.
+
+Example: Create Task Body
 
 {
-  "title": "New Task"
+  "title": "New Task Title",
+  "description": "Optional description for the task."
 }
 
-PUT /api/tasks/:id
 
-Update title, status, or description.
-
-Body Example
+Example: Update Task Body
 
 {
   "status": "completed"
 }
 
-DELETE /api/tasks/:id
 
-Delete a task.
+4. Project Structure
 
-📁 5. Project Structure
+The repository is structured into two main directories for clear separation of concerns (backend API vs. frontend client).
+
 task-manager-app/
 │
 ├── backend/
-│   ├── routes/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   └── server.js
+│   ├── routes/              # Express route definitions (API paths)
+│   ├── controllers/         # Core business logic for handling requests
+│   ├── middleware/          # JWT authentication middleware
+│   ├── models/              # Mongoose schemas and models
+│   └── server.js            # Main entry file and server setup
 │
 └── frontend/
     ├── src/
-    │   ├── pages/
-    │   ├── components/
-    │   ├── api/
-    │   └── App.jsx
+    │   ├── pages/           # Top-level components for routing (e.g., Home, Login)
+    │   ├── components/      # Reusable UI components (e.g., TaskCard, Navbar)
+    │   ├── api/             # Axios instance and API call functions
+    │   └── App.jsx          # Main application component and router configuration
+
+
+5. Running Tests & Coverage (If Implemented)
+
+If unit and integration tests are added to the project, use the following commands:
+
+Run Tests
+
+npm test
+
+
+Generate Coverage Report
+
+npm run test:coverage
+
+
+The coverage report will be available at: /coverage/index.html
