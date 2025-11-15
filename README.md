@@ -1,10 +1,10 @@
-# 🚀 Task Manager App — MERN Stack
+# 🚀 Task Manager App 
 
 A lightweight, modular, and production-ready **Task Manager** application built using the **MERN stack**, featuring JWT authentication, protected routes, and a modern, responsive UI.
 
 ---
 
-## 📦 Tech Stack
+## 📦 Tech Stack - MERN Stack
 
 ### **Backend**
 
