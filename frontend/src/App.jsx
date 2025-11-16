@@ -3,7 +3,8 @@ import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import api from "./api/axios"; // axios instance used elsewhere
 
 /* Avatar UI moved here for global top-right placement */
 function AvatarProfile({ onLogout }) {
@@ -39,7 +40,7 @@ function AvatarProfile({ onLogout }) {
 
       {open && (
         <div className="avatar-menu" style={{ right: 0 }}>
-          <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}>
+          <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
             <div style={{ fontWeight: 800 }}>{username}</div>
             <div style={{ fontSize: 12, color: "var(--muted)" }}>Productivity user</div>
           </div>
@@ -67,6 +68,16 @@ function AvatarProfile({ onLogout }) {
   );
 }
 
+/* helper: check if date is same local day */
+function isSameLocalDay(isoDate) {
+  if (!isoDate) return false;
+  const d = new Date(isoDate);
+  const now = new Date();
+  return d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate();
+}
+
 export default function App() {
   const navigate = useNavigate();
   function logout() {
@@ -74,6 +85,43 @@ export default function App() {
     localStorage.removeItem("username");
     navigate("/login");
   }
+
+  // --- Paap ka Ghada count state ---
+  const [paapCount, setPaapCount] = useState(0);
+  const [pulse, setPulse] = useState(false);
+  const prevCountRef = useRef(0);
+  const mountedRef = useRef(true);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    async function fetchCount() {
+      try {
+        const res = await api.get("/api/tasks");
+        if (!mountedRef.current) return;
+        const tasks = res.data.tasks || [];
+        const count = tasks.filter(t => !isSameLocalDay(t.createdAt) && t.status !== "completed").length;
+
+        // trigger pulse when count increases
+        if (count > prevCountRef.current) {
+          setPulse(true);
+          // auto-clear pulse shortly after
+          setTimeout(() => setPulse(false), 650);
+        }
+
+        prevCountRef.current = count;
+        setPaapCount(count);
+      } catch (err) {
+        // silent fail
+        console.error("Paap count fetch error:", err);
+      }
+    }
+
+    // initial fetch
+    fetchCount();
+    // poll every 45 seconds
+    const id = setInterval(fetchCount, 45000);
+    return () => { mountedRef.current = false; clearInterval(id); };
+  }, []);
 
   return (
     <>
@@ -103,6 +151,15 @@ export default function App() {
               <NavLink to="/login" className="nav-link">🔑 Login</NavLink>
               <NavLink to="/register" className="nav-link">✨ Register</NavLink>
             </nav>
+
+            {/* Paap ka Ghada pot placed under the Workspace nav inside the sidebar.
+                Purpose: visually distinct reminder showing only the numeric count of older undone tasks.
+                This is intentionally simple — no actions, no task details. */}
+            <div className={`paap-pot ${pulse ? 'pulse' : ''}`} title="Paap ka Ghada — pending tasks from previous days">
+              <div className="paap-label">Paap ka Ghada</div>
+              <div className="paap-count" aria-hidden>{paapCount}</div>
+              <div className="paap-sub">old undone</div>
+            </div>
           </aside>
 
           <main>

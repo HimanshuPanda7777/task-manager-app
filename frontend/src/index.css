@@ -349,3 +349,227 @@ html,body,#root {
     top: 0;
   }
 }
+/* -------------------------
+   Paap ka Ghada (sidebar pot)
+   ------------------------- */
+
+/* make sidebar a column so pot sits under nav (no layout change for existing content) */
+.sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+/* Paap pot container */
+.paap-pot {
+  margin-top: 12px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  /* terracotta/earthen pot gradient */
+  background: linear-gradient(180deg, #a86a34 0%, #7a3f1b 60%, #5a2b12 100%);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5), inset 0 -8px 18px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #fff;
+  text-align: center;
+  min-height: 110px;
+  /* ensure pot doesn't push other content; it sits inside sidebar flow */
+}
+
+/* small label above the count */
+.paap-pot .paap-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.95);
+}
+
+/* the round count bubble (the mouth of the pot) */
+.paap-pot .paap-count {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), rgba(0,0,0,0.18));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: inset 0 -8px 14px rgba(0,0,0,0.25), 0 8px 18px rgba(0,0,0,0.3);
+}
+
+/* small sub text under count */
+.paap-pot .paap-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.9);
+  margin-top: 0;
+}
+
+/* responsive tweak: keep pot compact on small screens */
+@media (max-width: 900px) {
+  .paap-pot { min-height: 84px; padding: 10px; }
+  .paap-pot .paap-count { width: 48px; height: 48px; font-size: 18px; }
+}
+
+/* -------------------------
+   Paap ka Ghada — upgraded pot visuals + pulse
+   ------------------------- */
+
+/* Ensure sidebar is column layout (safe override) */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Pot container (outer card) — subtle frame that holds the pot art */
+.paap-pot {
+  margin-top: 12px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 18px;
+  border-radius: 14px;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  text-align: center;
+  min-height: 130px;
+  position: relative;
+  pointer-events: auto; /* unchanged behavior */
+}
+
+/* Decorative plate behind the pot (gives grounded feeling) */
+.paap-pot::before {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(0,0,0,0.45), rgba(0,0,0,0.55));
+  filter: blur(6px);
+  z-index: 1;
+  opacity: 0.95;
+}
+
+/* The pot itself — centered circular/oval shape using pseudo element */
+.paap-pot .paap-count {
+  width: 68px;
+  height: 68px;
+  border-radius: 48% 48% 54% 54% / 48% 48% 60% 60%; /* subtle pot bulge */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  font-size: 22px;
+  color: #fff;
+  position: relative;
+  z-index: 3;
+  background: linear-gradient(180deg, #3b2a1f 0%, #2a1a12 55%, #1a0f09 100%);
+  box-shadow: inset 0 -14px 24px rgba(0,0,0,0.6), 0 6px 18px rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.03);
+}
+
+/* Add decorative rings around the pot using an extra pseudo-element */
+.paap-pot .paap-count::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%,-50%);
+  width: 130%;
+  height: 84%;
+  border-radius: 50%;
+  z-index: 2;
+  background:
+    radial-gradient(circle at 40% 30%, rgba(255,255,255,0.02), transparent 12%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0 2px, transparent 2px 18px);
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Pot mouth lip — a darker ring above the count bubble */
+.paap-pot .paap-count::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(255,255,255,0.02));
+  z-index: 4;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+}
+
+/* Labels */
+.paap-pot .paap-label {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #ffd9b6;
+  z-index: 5;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+.paap-pot .paap-sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.9);
+  margin-top: 4px;
+  z-index: 5;
+}
+
+/* Small decorative ember/smoke above pot */
+.paap-pot .paap-smoke {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.9;
+}
+.paap-pot .paap-smoke svg { width: 100%; height: 100%; opacity: 0.06; filter: blur(0.8px); }
+
+/* Pulse animation when paap count increases */
+.paap-pot.pulse .paap-count {
+  animation: potPulse 620ms cubic-bezier(.2,.9,.2,1);
+  box-shadow:
+    inset 0 -14px 28px rgba(0,0,0,0.6),
+    0 12px 30px rgba(255,120,40,0.10),    /* warm glow */
+    0 4px 14px rgba(0,0,0,0.45);
+}
+
+@keyframes potPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255,120,40,0));
+  }
+  30% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 8px 18px rgba(255,120,40,0.12));
+  }
+  60% {
+    transform: scale(0.995);
+    filter: drop-shadow(0 6px 14px rgba(255,120,40,0.06));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(255,120,40,0));
+  }
+}
+
+/* small responsiveness */
+@media (max-width: 900px) {
+  .paap-pot { min-height: 96px; padding: 8px; }
+  .paap-pot .paap-count { width: 56px; height: 56px; font-size: 18px; }
+  .paap-pot::before { bottom: 6px; height: 8px; }
+}
